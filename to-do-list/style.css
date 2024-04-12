@@ -33,8 +33,20 @@ body {
   box-shadow: 2px 2px 5px rgb(165, 165, 165);
 }
 
-.add-container {
-  align-self: flex-start;
-  margin-left: 20px;
-  margin-top: 50px;
+.submit-form {
+  padding-bottom: 30px;
+}
+
+.to-do-item {
+  display: flex;
+  gap: 15px;
+}
+
+.task {
+  width: 150px;
+}
+
+.to-do-item button {
+  height: 20px;
+  align-self: center;
 }
