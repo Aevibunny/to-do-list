@@ -12,41 +12,60 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+* {
   margin: 0;
+}
+
+header {
+  background-color: lightseagreen;
+  height: 10vh;
   display: flex;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
+  align-items: center;
+  padding-left: 40px;
+  font-size: 40px;
+  /* box-shadow: 1px 1px 5px darkgray; */
+}
+
+.body-container {
+  display: flex;
+}
+
+.side-menu {
+  width: 15vh;
+  height: 100vh;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding: 25px;
   background-color: lightgray;
-  align-items: center;
 }
 
-.to-do-container {
+.side-menu button {
+  border: none;
+  border-radius: 5px;
+  height: 25px;
+  width: 100px;
+  margin-top: 50px;
+}
+
+.project-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
+  flex-wrap: wrap;
+  margin: 50px;
+}
+
+.project {
+  margin: 50px;
+  height: 30vh;
   width: 40vh;
-  height: 90vh;
+  background-color: lightgray;
   border-radius: 10px;
-  box-shadow: 2px 2px 5px rgb(165, 165, 165);
 }
 
-.submit-form {
-  padding-bottom: 30px;
-}
-
-.to-do-item {
-  display: flex;
-  gap: 15px;
-}
-
-.task {
-  width: 150px;
-}
-
-.to-do-item button {
-  height: 20px;
-  align-self: center;
+.project h6 {
+  background-color: lightseagreen;
+  font-size: 15px;
+  padding-left: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
