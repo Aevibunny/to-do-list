@@ -68,4 +68,23 @@ header {
   padding-left: 10px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  display: flex;
 }
+
+.project h6 button {
+  background-color: lightseagreen;
+  border: none;
+  margin-right: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.edit-button {
+  margin-left: auto;
+}
+
+li {
+  list-style-type: none;
+  padding-top: 7px;
+}
+
