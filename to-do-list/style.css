@@ -16,9 +16,17 @@
   margin: 0;
 }
 
+html {
+   height: 100% 
+}
+
+body {
+   min-height: 100%
+}
+
 header {
   background-color: lightseagreen;
-  height: 10vh;
+  min-height: 10dvh;
   display: flex;
   align-items: center;
   padding-left: 40px;
@@ -32,7 +40,7 @@ header {
 
 .side-menu {
   width: 15vh;
-  height: 100vh;
+  /* height: 90dvh; */
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -51,11 +59,10 @@ header {
 .project-container {
   display: flex;
   flex-wrap: wrap;
-  margin: 50px;
 }
 
 .project {
-  margin: 50px;
+  margin: 28px;
   height: 30vh;
   width: 40vh;
   background-color: lightgray;
@@ -88,3 +95,55 @@ li {
   padding-top: 7px;
 }
 
+/* popup form */
+.popup-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: lightseagreen;
+  height: 475px;
+  width: 450px;
+  border: 1px solid rgb(33, 33, 33);
+  box-shadow: 3px 3px 7px black;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  padding-right: 2%;
+}
+
+.popup input{
+  width: 100%;
+  height: 30px;
+  margin: 10px;
+}
+
+.popup .form-button {
+  width: 44%;
+  height: 30px;
+  margin-top: 25px;
+  background-color: #242424;
+  color: white;
+  border: none;
+  border-radius: 7px;
+}
+
+.popup h2 {
+  margin-bottom: 30px;
+}
+
+.popup-open {
+  opacity: 1;
+  z-index: 999;
+}
