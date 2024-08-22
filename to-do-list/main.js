@@ -15,7 +15,6 @@ const projectTitle = document.getElementById('project-title');
 const projectDueDate = document.getElementById('project-due-date');
 
 const projectArr = [];
-const currentProject = {};
 
 const showProjectForm = () => {
   
@@ -26,9 +25,15 @@ createProjectBtn.addEventListener('click', () => {
 })
 
 cancelBtn.addEventListener('click', () => {
-  popUpContainer.classList.remove('popup-open')
+  popUpContainer.classList.remove('popup-open');
+  clearForm();
 })
 
+// Clear Form
+let clearForm = () => {
+  projectTitle.value = '';
+  projectDueDate.value = '';
+}
 
 //constructor
 class Project {
@@ -51,40 +56,50 @@ submitProjectForm.addEventListener('click', () => {
   console.log(projectArr);  
 })
 
-// Clear Form
-let clearForm = () => {
-  projectTitle.value = '';
-  projectDueDate.value = '';
-}
-
-// Cancel Form
-
-cancelBtn.addEventListener('click', () => {
-  popUpContainer.classList.remove('popup-open')
-})
-
 const renderProjects = () => {
     projectContainer.innerHTML = '';
 
-    projectArr.map((project) => projectContainer.innerHTML += 
-    `<div class="project" id="${project.id}">
-        <h6 class="project-title">${project.title} ${project.dueDate}<button class="edit-button">Edit</button> <button class="add-button">+</button></h6>
-        <ul>
-          <li><input type="radio"> Wash Dishes</li>
-          <li><input type="radio"> Wash Laundry</li>
+    projectArr.forEach((project) => {
+      projectContainer.innerHTML += 
+      `<div class="project" id="${project.id}">
+        <h6 class="project-title">${project.title} ${project.dueDate} <button class="add-button">+</button> <button class="delete-button">X</button></h6>
+        <ul class="ul-container" id="ul-container-${project.id}">
         </ul>
-     </div>
-    `)
-};
-
-const editProject = () => {
-    
-};
-
-const createTask = () => {
-
+      </div>
+      `;
+    });
 };
 
 const deleteTask = () => {
     
 };
+
+// Add Task Button
+const addTask = (e) => {
+    const task = document.createElement('li');
+    task.textContent = "test";
+    document.getElementById('ul-container-' + e.target.parentElement.parentElement.id).append(task);
+};
+
+
+document.addEventListener('click', e => {
+  if (e.target.matches(".add-button")) {
+    addTask(e);
+  }
+})
+
+// Delete Project Button
+document.addEventListener('click', e => {
+  if (e.target.matches(".delete-button")) {
+    deleteProject(e);
+  }
+})
+
+const deleteProject = (e) => {
+    let indexToRemove = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
+    projectArr.splice(indexToRemove, 1);
+    renderProjects();
+    console.log(projectArr);
+}
+
+renderProjects();

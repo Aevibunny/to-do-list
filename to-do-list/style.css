@@ -23,42 +23,45 @@ html {
 body {
    min-height: 100%
 }
+/* Variables */
 
+
+/* Header */
 header {
-  background-color: lightseagreen;
+  background-color: lightgray;
   min-height: 10dvh;
   display: flex;
   align-items: center;
   padding-left: 40px;
   font-size: 40px;
-  /* box-shadow: 1px 1px 5px darkgray; */
+  border-bottom: 2px solid darkslategray;
+}
+
+header button {
+  font-size: 1rem;
+  color: white;
+  background-color: rgb(24, 130, 125);
+  border: none;
+  border-radius: 5px;
+  height: 2rem;
+  width: 8rem;
+  margin-left: 3em;
 }
 
 .body-container {
   display: flex;
 }
 
-.side-menu {
-  width: 15vh;
-  /* height: 90dvh; */
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  padding: 25px;
-  background-color: lightgray;
-}
-
-.side-menu button {
-  border: none;
-  border-radius: 5px;
-  height: 25px;
-  width: 100px;
-  margin-top: 50px;
-}
-
 .project-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto, 35vh);
+}
+
+@media only screen and (max-width: 768px) {
+  .project-container {
+     display: block;
+  }
 }
 
 .project {
@@ -69,10 +72,13 @@ header {
   border-radius: 10px;
 }
 
+
+
 .project h6 {
   background-color: lightseagreen;
-  font-size: 15px;
+  font-size: 1rem;
   padding-left: 10px;
+  padding-bottom: 1.1 rem;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   display: flex;
@@ -82,12 +88,17 @@ header {
   background-color: lightseagreen;
   border: none;
   margin-right: 10px;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: bold;
 }
 
-.edit-button {
+.delete-button {
+  font-size: 1rem;
+}
+
+.add-button {
   margin-left: auto;
+  font-size: 2rem;
 }
 
 li {
