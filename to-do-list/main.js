@@ -1,4 +1,6 @@
 import './style.css'
+import { format, differenceInDays, parseISO, startOfDay } from "date-fns";
+
 
 // import { setupCounter } from './counter.js'
 
@@ -19,11 +21,12 @@ const projectArr = [];
 const showProjectForm = () => {
   
 }
- // Pop up form
+ // Opoen Popup form
 createProjectBtn.addEventListener('click', () => {
   popUpContainer.classList.add('popup-open')  
 })
-
+ 
+// Close Popup form
 cancelBtn.addEventListener('click', () => {
   popUpContainer.classList.remove('popup-open');
   clearForm();
@@ -47,7 +50,7 @@ class Project {
 
 //pop up form submit
 submitProjectForm.addEventListener('click', () => {
-  let newProject = new Project(projectTitle.value, projectDueDate.value)
+  let newProject = new Project(projectTitle.value, startOfDay(parseISO(projectDueDate.value)))
   projectArr.push(newProject);
   newProject.id = projectArr.indexOf(newProject) + newProject.title;
   clearForm();
@@ -56,22 +59,20 @@ submitProjectForm.addEventListener('click', () => {
   console.log(projectArr);  
 })
 
+// Render Projects
 const renderProjects = () => {
     projectContainer.innerHTML = '';
-
+    
     projectArr.forEach((project) => {
       projectContainer.innerHTML += 
       `<div class="project" id="${project.id}">
-        <h6 class="project-title">${project.title} ${project.dueDate} <button class="add-button">+</button> <button class="delete-button">X</button></h6>
+        <h6 class="project-title">${project.title} Due in: ${differenceInDays(dueDate, startOfDay(new Date()))} day(s) <button class="add-button">+</button> <button class="delete-button">X</button></h6>
         <ul class="ul-container" id="ul-container-${project.id}">
         </ul>
       </div>
       `;
+      saveData();
     });
-};
-
-const deleteTask = () => {
-    
 };
 
 // Add Task Button
@@ -79,8 +80,8 @@ const addTask = (e) => {
     const task = document.createElement('li');
     task.textContent = "test";
     document.getElementById('ul-container-' + e.target.parentElement.parentElement.id).append(task);
+    saveData();
 };
-
 
 document.addEventListener('click', e => {
   if (e.target.matches(".add-button")) {
@@ -99,7 +100,24 @@ const deleteProject = (e) => {
     let indexToRemove = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
     projectArr.splice(indexToRemove, 1);
     renderProjects();
-    console.log(projectArr);
+    saveData();
 }
 
 renderProjects();
+
+//save local storage
+let saveData = () => {
+  localStorage.setItem('data', projectContainer.innerHTML);
+}
+
+let loadData = () => {
+  projectContainer.innerHTML = localStorage.getItem('data');
+}
+
+// loadData();
+
+let currentDate = startOfDay(new Date());
+let dueDate = startOfDay(parseISO('2024-08-23'));
+console.log(currentDate);
+console.log(dueDate);
+console.log(differenceInDays(dueDate, currentDate))
