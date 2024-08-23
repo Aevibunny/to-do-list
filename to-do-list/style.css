@@ -51,6 +51,7 @@ header button {
   margin-left: 3em;
 }
 
+/* Body containers */
 .body-container {
   display: flex;
 }
@@ -67,6 +68,7 @@ header button {
   }
 }
 
+/* Projects */
 .project {
   margin: 28px;
   height: 30vh;
@@ -74,8 +76,6 @@ header button {
   background-color: lightgray;
   border-radius: 10px;
 }
-
-
 
 .project h6 {
   background-color: lightseagreen;
@@ -102,6 +102,11 @@ header button {
 .add-button {
   margin-left: auto;
   font-size: 2rem;
+}
+
+.ul-container {
+  max-height: 250px;
+  overflow: scroll;
 }
 
 li {

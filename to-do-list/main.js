@@ -1,5 +1,6 @@
 import './style.css'
 import { format, differenceInDays, parseISO, startOfDay } from "date-fns";
+import { calculateDueDate } from './calculate-due-date';
 
 
 // import { setupCounter } from './counter.js'
@@ -115,19 +116,3 @@ const loadData = () => {
 }
 
 // loadData();
-
-const calculateDueDate = (date) => {
-  let calculatedDate = differenceInDays(date, startOfDay(new Date()));
-  if (date == 'Invalid Date') {
-    return '';
-  } else if (calculatedDate === 0) {
-    return `<p class="yellow-highlight">Due Today!</p>`;
-  } else if (calculatedDate < 0) {
-    calculatedDate = calculatedDate * -1;
-    return `<p class="yellow-highlight">Due ${calculatedDate} day(s) ago!</p>`;
-  }
-  
-  else {
-    return `Due in: ${calculatedDate} day(s)`;
-  }
-}
