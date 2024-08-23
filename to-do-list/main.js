@@ -66,7 +66,7 @@ const renderProjects = () => {
     projectArr.forEach((project) => {
       projectContainer.innerHTML += 
       `<div class="project" id="${project.id}">
-        <h6 class="project-title">${project.title} Due in: ${differenceInDays(dueDate, startOfDay(new Date()))} day(s) <button class="add-button">+</button> <button class="delete-button">X</button></h6>
+        <h6 class="project-title">${project.title} ${calculateDueDate(project.dueDate)} <button class="add-button">+</button> <button class="delete-button">X</button></h6>
         <ul class="ul-container" id="ul-container-${project.id}">
         </ul>
       </div>
@@ -106,18 +106,28 @@ const deleteProject = (e) => {
 renderProjects();
 
 //save local storage
-let saveData = () => {
+const saveData = () => {
   localStorage.setItem('data', projectContainer.innerHTML);
 }
 
-let loadData = () => {
+const loadData = () => {
   projectContainer.innerHTML = localStorage.getItem('data');
 }
 
 // loadData();
 
-let currentDate = startOfDay(new Date());
-let dueDate = startOfDay(parseISO('2024-08-23'));
-console.log(currentDate);
-console.log(dueDate);
-console.log(differenceInDays(dueDate, currentDate))
+const calculateDueDate = (date) => {
+  let calculatedDate = differenceInDays(date, startOfDay(new Date()));
+  if (date == 'Invalid Date') {
+    return '';
+  } else if (calculatedDate === 0) {
+    return `<p class="yellow-highlight">Due Today!</p>`;
+  } else if (calculatedDate < 0) {
+    calculatedDate = calculatedDate * -1;
+    return `<p class="yellow-highlight">Due ${calculatedDate} day(s) ago!</p>`;
+  }
+  
+  else {
+    return `Due in: ${calculatedDate} day(s)`;
+  }
+}
