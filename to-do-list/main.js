@@ -1,6 +1,7 @@
 import './style.css'
 import { parseISO, startOfDay } from "date-fns";
 import { calculateDueDate } from './calculate-due-date';
+import { checkContrast } from './check-contrast';
 
 const projectContainer = document.getElementById('project-container');
 const createProjectBtn = document.getElementById('create-project-button');
@@ -9,6 +10,7 @@ const popUpContainer = document.getElementById('popup-container');
 const cancelBtn = document.getElementById('cancel');
 const projectTitle = document.getElementById('project-title');
 const projectDueDate = document.getElementById('project-due-date');
+const projectColor = document.getElementById('project-color');
 
 const projectArr = [];
 
@@ -31,19 +33,23 @@ let clearForm = () => {
 
 //constructor
 class Project {
-    constructor(title, dueDate, id) {
+    constructor(title, dueDate, color, textColor, id) {
         this.id = id;
         this.title = title;
         this.dueDate = dueDate;
+        this.color = color;
         this.tasks = [];
+        this.textColor = textColor;
     }
   }
 
 //pop up form submit
 submitProjectForm.addEventListener('click', () => {
-  let newProject = new Project(projectTitle.value, startOfDay(parseISO(projectDueDate.value)))
+  let textColor = checkContrast(projectColor.value);
+  let newProject = new Project(projectTitle.value, startOfDay(parseISO(projectDueDate.value)), projectColor.value, textColor)
   projectArr.push(newProject);
-  newProject.id = projectArr.indexOf(newProject) + newProject.title;
+  let noSpaceTitle = projectTitle.value.split(' ').join('');
+  newProject.id = projectArr.indexOf(newProject) + noSpaceTitle
   clearForm();
   popUpContainer.classList.remove('popup-open');
   renderProjects();
@@ -56,7 +62,11 @@ const renderProjects = () => {
     projectArr.forEach((project) => {
       projectContainer.innerHTML += 
       `<div class="project" id="${project.id}">
-        <h6 class="project-title">${project.title}<input type="text" class="task-input" id="task-input-${project.id}"><button class="add-button">+</button> <button class="delete-button">X</button><br></h6>
+        <h6 class="project-title" style="background-color: ${project.color}; color: ${project.textColor}">${project.title}
+          <input type="text" maxlength="24" class="task-input" id="task-input-${project.id}">
+          <button class="add-button" style="color:${project.textColor}">+</button>
+          <button class="delete-button" style="color: ${project.textColor}">x</button><br>
+        </h6>
         <h7 class="due-date">${calculateDueDate(project.dueDate)}</h7>
         <ul class="ul-container" id="ul-container-${project.id}">
         </ul>
@@ -68,11 +78,12 @@ const renderProjects = () => {
         `<li>
             <input type="checkbox" class="check-box" id="${project.id + task}">
             <label for="${project.id + task}">${task}</label>
-            <input type="button" id="${task}" class="task-delete-btn"" value="X"> 
+            <input type="button" id="${task}" class="task-delete-btn"" value="x"> 
          </li>
         `;
       })
       saveData();
+      console.log(projectArr);
     });
 };
 
