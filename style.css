@@ -25,12 +25,6 @@ body {
    min-height: 100%;
    width: 100%;
 }
-/* Variables */
-.yellow-highlight {
-  background-color: yellow;
-  border-radius: 4px;
-  padding: 1%;
-}
 
 /* Header */
 header {
@@ -230,4 +224,9 @@ input[type="checkbox"] {
   .project {
     width: 90%;
   }
+}
+
+/* Variables */
+.yellow-highlight {
+  background-color: yellow;
 }

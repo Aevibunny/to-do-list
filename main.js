@@ -55,37 +55,101 @@ submitProjectForm.addEventListener('click', () => {
   renderProjects();
 })
 
-// Render Projects
 const renderProjects = () => {
-    projectContainer.innerHTML = '';
-    
-    projectArr.forEach((project) => {
-      projectContainer.innerHTML += 
-      `<div class="project" id="${project.id}">
-        <h6 class="project-title" style="background-color: ${project.color}; color: ${project.textColor}">${project.title}
-          <input type="text" maxlength="24" class="task-input" id="task-input-${project.id}">
-          <button class="add-button" style="color:${project.textColor}">+</button>
-          <button class="delete-button" style="color: ${project.textColor}">x</button><br>
-        </h6>
-        <h7 class="due-date">${calculateDueDate(project.dueDate)}</h7>
-        <ul class="ul-container" id="ul-container-${project.id}">
-        </ul>
-      </div>
-      `;
+  projectContainer.innerHTML = '';
+  
+  projectArr.forEach((project) => {
+      // Create project container
+      const projectDiv = document.createElement('div');
+      projectDiv.classList.add('project');
+      projectDiv.id = project.id;
+
+      // Create project title
+      const projectTitle = document.createElement('h6');
+      projectTitle.classList.add('project-title');
+      projectTitle.style.backgroundColor = project.color;
+      projectTitle.style.color = project.textColor;
+      projectTitle.textContent = project.title;
+
+      // Create input elements and buttons
+      const taskInput = document.createElement('input');
+      taskInput.type = 'text';
+      taskInput.maxLength = 24;
+      taskInput.classList.add('task-input');
+      taskInput.id = `task-input-${project.id}`;
+
+      const addButton = document.createElement('button');
+      addButton.classList.add('add-button');
+      addButton.style.color = project.textColor;
+      addButton.textContent = '+';
+
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('delete-button');
+      deleteButton.style.color = project.textColor;
+      deleteButton.textContent = 'x';
+
+      projectTitle.appendChild(taskInput);
+      projectTitle.appendChild(addButton);
+      projectTitle.appendChild(deleteButton);
+
+      // Create and style due date
+      const dueDate = document.createElement('h7');
+      dueDate.classList.add('due-date');
+      let calculatedDate = calculateDueDate(project.dueDate);
+      if (!project.dueDate) {
+      } else if (calculatedDate === 0) {
+        dueDate.textContent = "Due Today!";
+        dueDate.classList.add('yellow-highlight')
+      } else if (calculatedDate < 0) {
+        dueDate.textContent = `Due ${calculatedDate * -1} day(s) ago!`;
+        dueDate.classList.add('yellow-highlight')
+      } else {
+        dueDate.textContent = `Due in ${calculatedDate} day(s)`;
+      }
+
+      // Create ul container
+      const ulContainer = document.createElement('ul');
+      ulContainer.classList.add('ul-container');
+      ulContainer.id = `ul-container-${project.id}`;
+
+      // Append elements to project container
+      projectDiv.appendChild(projectTitle);
+      projectDiv.appendChild(dueDate);
+      projectDiv.appendChild(ulContainer);
+
+      // Append project to main container
+      projectContainer.appendChild(projectDiv);
+
       // Render Tasks
       project.tasks.forEach((task) => {
-        document.querySelector(`#ul-container-${project.id}`).innerHTML += 
-        `<li>
-            <input type="checkbox" class="check-box" id="${project.id + task}">
-            <label for="${project.id + task}">${task}</label>
-            <input type="button" id="${task}" class="task-delete-btn"" value="x"> 
-         </li>
-        `;
-      })
-      saveData();
-      console.log(projectArr);
-    });
+          const li = document.createElement('li');
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.classList.add('check-box');
+          checkbox.id = `${project.id}${task}`;
+
+          const label = document.createElement('label');
+          label.htmlFor = `${project.id}${task}`;
+          label.textContent = task;
+
+          const deleteTaskButton = document.createElement('input');
+          deleteTaskButton.type = 'button';
+          deleteTaskButton.id = task;
+          deleteTaskButton.classList.add('task-delete-btn');
+          deleteTaskButton.value = 'x';
+
+          li.appendChild(checkbox);
+          li.appendChild(label);
+          li.appendChild(deleteTaskButton);
+
+          ulContainer.appendChild(li);
+      });
+  });
+
+  saveData();
 };
+
 
 // Add Task Button
 const addTask = (e) => {
