@@ -1,9 +1,7 @@
 import './style.css'
-import { format, differenceInDays, parseISO, startOfDay } from "date-fns";
+import { parseISO, startOfDay } from "date-fns";
 import { calculateDueDate } from './calculate-due-date';
 
-
-// import { setupCounter } from './counter.js'
 
 // document.querySelector('#app').innerHTML = `
 
@@ -67,52 +65,67 @@ const renderProjects = () => {
     projectArr.forEach((project) => {
       projectContainer.innerHTML += 
       `<div class="project" id="${project.id}">
-        <h6 class="project-title">${project.title} ${calculateDueDate(project.dueDate)} <button class="add-button">+</button> <button class="delete-button">X</button></h6>
+        <h6 class="project-title">${project.title}<input type="text" class="task-input" id="task-input-${project.id}"><button class="add-button">+</button> <button class="delete-button">X</button><br></h6>
+        <h7 class="due-date">${calculateDueDate(project.dueDate)}</h7>
         <ul class="ul-container" id="ul-container-${project.id}">
         </ul>
       </div>
       `;
+      // Render Tasks
+      project.tasks.forEach((task) => {
+        document.querySelector(`#ul-container-${project.id}`).innerHTML += 
+        `<li>
+            <input type="checkbox" class="check-box" id="test1">
+            <label for="test1">${task}</label>
+         </li>
+        `;
+      })
       saveData();
     });
 };
 
 // Add Task Button
 const addTask = (e) => {
-    const task = document.createElement('li');
-    task.textContent = "test";
-    document.getElementById('ul-container-' + e.target.parentElement.parentElement.id).append(task);
-    saveData();
-};
+  let projectId = e.target.parentElement.parentElement.id;
+  let projectIndex = projectArr.findIndex((project) => project.id === projectId);
+  let taskInput = document.getElementById('task-input-' + projectId).value;
+  projectArr[projectIndex].tasks.push(taskInput);
+  renderProjects();
+  saveData();
+}
 
-document.addEventListener('click', e => {
+document.addEventListener('click', (e) => {
   if (e.target.matches(".add-button")) {
     addTask(e);
   }
 })
 
 // Delete Project Button
-document.addEventListener('click', e => {
+const deleteProject = (e) => {
+  let indexToRemove = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
+  projectArr.splice(indexToRemove, 1);
+  renderProjects();
+  saveData();
+}
+
+document.addEventListener('click', (e) => {
   if (e.target.matches(".delete-button")) {
     deleteProject(e);
   }
 })
 
-const deleteProject = (e) => {
-    let indexToRemove = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
-    projectArr.splice(indexToRemove, 1);
-    renderProjects();
-    saveData();
-}
-
-renderProjects();
-
 //save local storage
 const saveData = () => {
-  localStorage.setItem('data', projectContainer.innerHTML);
+  // localStorage.setItem('data', projectContainer.innerHTML);
+  localStorage.setItem('array', JSON.stringify(projectArr));
 }
 
 const loadData = () => {
-  projectContainer.innerHTML = localStorage.getItem('data');
+  // projectContainer.innerHTML = localStorage.getItem('data');
+  let retreivedArr = localStorage.getItem('array');
+  let fixedArr = JSON.parse(retreivedArr);
+  projectArr.splice(0, projectArr.length, ...fixedArr)
 }
 
-// loadData();
+loadData();
+renderProjects();
