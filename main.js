@@ -96,7 +96,8 @@ const renderProjects = () => {
       const dueDate = document.createElement('h7');
       dueDate.classList.add('due-date');
       let calculatedDate = calculateDueDate(project.dueDate);
-      if (!project.dueDate) {
+      if (!project.dueDate || project.dueDate == 'Invalid Date') {
+        dueDate.textContent = '';
       } else if (calculatedDate === 0) {
         dueDate.textContent = "Due Today!";
         dueDate.classList.add('yellow-highlight')
@@ -105,6 +106,7 @@ const renderProjects = () => {
         dueDate.classList.add('yellow-highlight')
       } else {
         dueDate.textContent = `Due in ${calculatedDate} day(s)`;
+        dueDate.classList.add('due-date-future')
       }
 
       // Create ul container
@@ -148,6 +150,7 @@ const renderProjects = () => {
   });
 
   saveData();
+  console.log(projectArr)
 };
 
 
