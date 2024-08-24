@@ -2,11 +2,6 @@ import './style.css'
 import { parseISO, startOfDay } from "date-fns";
 import { calculateDueDate } from './calculate-due-date';
 
-
-// document.querySelector('#app').innerHTML = `
-
-// `
-
 const projectContainer = document.getElementById('project-container');
 const createProjectBtn = document.getElementById('create-project-button');
 const submitProjectForm = document.getElementById('project-submit');
@@ -17,9 +12,6 @@ const projectDueDate = document.getElementById('project-due-date');
 
 const projectArr = [];
 
-const showProjectForm = () => {
-  
-}
  // Opoen Popup form
 createProjectBtn.addEventListener('click', () => {
   popUpContainer.classList.add('popup-open')  
@@ -55,7 +47,6 @@ submitProjectForm.addEventListener('click', () => {
   clearForm();
   popUpContainer.classList.remove('popup-open');
   renderProjects();
-  console.log(projectArr);  
 })
 
 // Render Projects
@@ -75,8 +66,9 @@ const renderProjects = () => {
       project.tasks.forEach((task) => {
         document.querySelector(`#ul-container-${project.id}`).innerHTML += 
         `<li>
-            <input type="checkbox" class="check-box" id="test1">
-            <label for="test1">${task}</label>
+            <input type="checkbox" class="check-box" id="${project.id + task}">
+            <label for="${project.id + task}">${task}</label>
+            <input type="button" id="${task}" class="task-delete-btn"" value="X"> 
          </li>
         `;
       })
@@ -102,8 +94,8 @@ document.addEventListener('click', (e) => {
 
 // Delete Project Button
 const deleteProject = (e) => {
-  let indexToRemove = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
-  projectArr.splice(indexToRemove, 1);
+  let indexToDelete = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
+  projectArr.splice(indexToDelete, 1);
   renderProjects();
   saveData();
 }
@@ -114,14 +106,27 @@ document.addEventListener('click', (e) => {
   }
 })
 
+//Delete Task Button
+const deleteTask = (e) => {
+  let projectIndex = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.parentElement.id);
+  let taskIndex = projectArr[projectIndex].tasks.findIndex((task) => task === e.target.id);
+  projectArr[projectIndex].tasks.splice(taskIndex, 1);
+  renderProjects();
+  saveData();
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.matches(".task-delete-btn")) {
+    deleteTask(e);
+  }
+})
+
 //save local storage
 const saveData = () => {
-  // localStorage.setItem('data', projectContainer.innerHTML);
   localStorage.setItem('array', JSON.stringify(projectArr));
 }
 
 const loadData = () => {
-  // projectContainer.innerHTML = localStorage.getItem('data');
   let retreivedArr = localStorage.getItem('array');
   let fixedArr = JSON.parse(retreivedArr);
   projectArr.splice(0, projectArr.length, ...fixedArr)
