@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/to-do-list/',
+  base: '/',
+  build: {
+    outDir: 'dist',
+  },
 });
