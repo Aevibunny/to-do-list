@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+    <script type="module" crossorigin src="/to-do-list/assets/index-veLnMjFZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/to-do-list/assets/index-C9aapvIO.css">
+  </head>
+  <body>
+    <header>
+      <h1>To Do List</h1>
+      <button id="create-project-button">Create Project</button>
+    </header>
+    <div class="project-container" id="project-container">
+    </div>
+    <div class="popup-container" id="popup-container">
+      <div class="popup" id="popup">
+          <form onsubmit="return false" class="create-project">
+              <h2>Create Project</h2>
+              <p>Title: <input type="text" maxlength="23" class="input-field" id="project-title"></p>
+              <p>Due Date: <input type="date" class="input-field" id="project-due-date"></p>
+              <p>Color: <input type="color" class="inpu-field" id="project-color"></p>
+              <input type="submit" value="Add +" class="submit form-button" id="project-submit">
+              <button class="cancel form-button" id="cancel">Cancel</button>
+          </form>
+      </div>
+  </div>
+  </body>
+</html>
