@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  background-color: whitesmoke;
+  background-color: #D8DBE2;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,7 +28,8 @@ body {
 
 /* Header */
 header {
-  background-color: lightgray;
+  color: white;
+  background-color: #242038;
   min-height: 10dvh;
   display: flex;
   align-items: center;
@@ -64,10 +65,10 @@ h1 {
   width: 400px;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 0 10px lightgray;
+  box-shadow: 0 0 10px gray;
 }
 
-.project h6 {
+.project-title {
   color: rgb(24, 130, 125);
   font-size: 1rem;
   padding-left: 10px;
@@ -79,7 +80,7 @@ h1 {
   border-bottom: 1px solid gray;
 }
 
-.project h6 button {
+.add-button, .delete-button {
   background-color: transparent;
   border: none;
   margin-right: 10px;
@@ -94,18 +95,20 @@ h1 {
 }
 
 .task-input {
-  margin-left: auto;
+  font-size: 16px;
   border-radius: 25px;
   border: 1px solid gray;
   background-color: rgb(238, 238, 238);
-}
-
-.delete-button {
-  font-size: 1rem;
+  width: 215px;
+  padding: 5px;
 }
 
 .add-button {
-  font-size: 2rem;
+  margin-left: auto;
+}
+
+.add-task-btn {
+  color: black;
 }
 
 /* Tasks */
@@ -115,9 +118,11 @@ h1 {
 }
 
 li {
+  font-size: 20px;
   list-style-type: none;
   padding-top: 7px;
   display: flex;
+  align-items: center;
 }
 
 label {
@@ -129,9 +134,9 @@ input[type=checkbox]:checked + label {
 }
 
 .task-delete-btn {
+  font-size: 20px;
   display: inline-block;
   margin-left: auto;
-  margin-right: 10%;
   background-color: transparent;
   border: None;
 }
@@ -173,8 +178,14 @@ input[type="checkbox"] {
 }
 
 .popup input{
+  font-size: 16px;
   height: 30px;
   margin: 10px;
+}
+
+.popup .input-field {
+  height: auto;
+  width: auto;
 }
 
 .popup .form-button {
@@ -210,6 +221,7 @@ input[type="checkbox"] {
   .project-container {
     justify-content: center;
   }
+
   header {
     display: flex;
     flex-direction: column;
@@ -224,6 +236,7 @@ input[type="checkbox"] {
 
   .project {
     width: 90%;
+    margin-bottom: 0px;
   }
 }
 

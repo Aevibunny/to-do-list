@@ -14,7 +14,7 @@ const projectColor = document.getElementById('project-color');
 
 const projectArr = [];
 
- // Opoen Popup form
+ // Open Popup form
 createProjectBtn.addEventListener('click', () => {
   popUpContainer.classList.add('popup-open')  
 })
@@ -40,6 +40,7 @@ class Project {
         this.color = color;
         this.tasks = [];
         this.textColor = textColor;
+        this.taskFormOpen = false;
     }
   }
 
@@ -59,6 +60,8 @@ const renderProjects = () => {
   projectContainer.innerHTML = '';
   
   projectArr.forEach((project) => {
+      project.taskFormOpen = false; 
+
       // Create project container
       const projectDiv = document.createElement('div');
       projectDiv.classList.add('project');
@@ -72,25 +75,28 @@ const renderProjects = () => {
       projectTitle.textContent = project.title;
 
       // Create input elements and buttons
-      const taskInput = document.createElement('input');
-      taskInput.type = 'text';
-      taskInput.maxLength = 24;
-      taskInput.classList.add('task-input');
-      taskInput.id = `task-input-${project.id}`;
+      // const taskInput = document.createElement('input');
+      // taskInput.type = 'text';
+      // taskInput.maxLength = 24;
+      // taskInput.classList.add('task-input');
+      // taskInput.id = `task-input-${project.id}`;
 
       const addButton = document.createElement('button');
       addButton.classList.add('add-button');
       addButton.style.color = project.textColor;
-      addButton.textContent = '+';
+      addButton.textContent = 'Add';
 
       const deleteButton = document.createElement('button');
       deleteButton.classList.add('delete-button');
       deleteButton.style.color = project.textColor;
       deleteButton.textContent = 'x';
 
-      projectTitle.appendChild(taskInput);
+      // projectTitle.appendChild(taskInput); <<<<<<<<<<<<<<<<<
       projectTitle.appendChild(addButton);
       projectTitle.appendChild(deleteButton);
+
+      addButton.addEventListener('click', openTaskForm);
+      deleteButton.addEventListener('click', () => deleteProject(project.id));
 
       // Create and style due date
       const dueDate = document.createElement('h7');
@@ -146,43 +152,107 @@ const renderProjects = () => {
           li.appendChild(deleteTaskButton);
 
           ulContainer.appendChild(li);
-      });
+      }); 
   });
-
   saveData();
   console.log(projectArr)
 };
 
 
 // Add Task Button
-const addTask = (e) => {
+// const addTask = (e) => {
+//   let projectId = e.target.parentElement.parentElement.id;
+//   let projectIndex = projectArr.findIndex((project) => project.id === projectId);
+//   let taskInput = document.getElementById('task-input-' + projectId).value;
+//   projectArr[projectIndex].tasks.push(taskInput);
+//   renderProjects();
+//   saveData();
+// }
+
+const openTaskForm = (e) => {
   let projectId = e.target.parentElement.parentElement.id;
   let projectIndex = projectArr.findIndex((project) => project.id === projectId);
-  let taskInput = document.getElementById('task-input-' + projectId).value;
-  projectArr[projectIndex].tasks.push(taskInput);
-  renderProjects();
-  saveData();
+
+  if (!projectArr[projectIndex].taskFormOpen) {
+  //Creating Task Form
+  const taskFormContainer = document.createElement('div');
+  taskFormContainer.id = 'task-form-container';
+  taskFormContainer.classList.add('project-title');
+
+  const taskForm = document.createElement('form');
+  taskForm.classList.add('task-form');
+
+  const taskInputLabel = document.createElement('label');
+  taskInputLabel.htmlFor = 'task-input';
+
+  const taskInput = document.createElement('input');
+  taskInput.type = 'text';
+  taskInput.id = 'task-input';
+  taskInput.classList.add('task-input');
+  taskInput.maxLength = '24';
+  taskInput.placeholder = 'Enter task';
+
+  const addTaskBtn = document.createElement('input');
+  addTaskBtn.type = 'submit';
+  addTaskBtn.value = 'Add';
+  addTaskBtn.classList.add('add-button', 'add-task-btn');
+
+  const closeFormBtn = document.createElement('input');
+  closeFormBtn.type = 'button';
+  closeFormBtn.value = 'x';
+  closeFormBtn.classList.add('delete-button', 'add-task-btn');
+
+  e.target.parentElement.insertAdjacentElement('afterend', taskFormContainer);
+  taskFormContainer.appendChild(taskInputLabel);
+  taskFormContainer.appendChild(taskInput);
+  taskFormContainer.appendChild(addTaskBtn);
+  taskFormContainer.appendChild(closeFormBtn);
+
+  // Event Listeners
+  closeFormBtn.addEventListener('click', () => {
+    taskFormContainer.remove();
+    projectArr[projectIndex].taskFormOpen = false;
+  })
+
+  addTaskBtn.addEventListener('click', () => {
+    projectArr[projectIndex].tasks.push(taskInput.value);
+    taskFormContainer.remove();
+    projectArr[projectIndex].taskFormOpen = false;
+    renderProjects();
+    saveData();
+  });
+
+  taskInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+    projectArr[projectIndex].tasks.push(taskInput.value);
+    taskFormContainer.remove();
+    projectArr[projectIndex].taskFormOpen = false;
+    renderProjects();
+    saveData();
+    }
+  });
+
+  taskInput.focus();
+  projectArr[projectIndex].taskFormOpen = true;
+} else {
+  return;
+}
 }
 
-document.addEventListener('click', (e) => {
-  if (e.target.matches(".add-button")) {
-    addTask(e);
-  }
-})
 
 // Delete Project Button
-const deleteProject = (e) => {
-  let indexToDelete = projectArr.findIndex((project) => project.id === e.target.parentElement.parentElement.id);
+const deleteProject = (projectId) => {
+  let indexToDelete = projectArr.findIndex((project) => project.id === projectId);
   projectArr.splice(indexToDelete, 1);
   renderProjects();
   saveData();
 }
 
-document.addEventListener('click', (e) => {
-  if (e.target.matches(".delete-button")) {
-    deleteProject(e);
-  }
-})
+// document.addEventListener('click', (e) => {
+//   if (e.target.matches(".delete-button")) {
+//     deleteProject(e);
+//   }
+// })
 
 //Delete Task Button
 const deleteTask = (e) => {
